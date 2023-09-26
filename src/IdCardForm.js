@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import './IdCardForm.css'; // Create this CSS file for styling
 import { saveAs } from 'file-saver';
-import idcardtemplate from './idcardtemplate.jpeg'; // Import the template image
 
 const IdCardForm = () => {
   const [name, setName] = useState('');
@@ -18,6 +17,7 @@ const IdCardForm = () => {
     const file = e.target.files[0];
     setImage(file);
   };
+
   
 const generateIdCard = () => {
     // Create a canvas to generate the ID card
@@ -30,7 +30,7 @@ const generateIdCard = () => {
   
     // Draw the template image as a background
     const templateImg = new Image();
-    templateImg.src = idcardtemplate;
+    templateImg.src = '/idcardtemplate.jpeg';
     templateImg.onload = () => {
       ctx.drawImage(templateImg, 0, 0, canvas.width, canvas.height);
   

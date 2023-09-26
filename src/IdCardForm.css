@@ -1,56 +1,68 @@
 /* IdCardForm.css */
 
 .id-card-form {
-    max-width: 400px;
-    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
     padding: 20px;
-    text-align: center;
+  }
+  
+  .input-section {
+    flex: 1;
+    padding: 20px;
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    border-radius: 5px;
   }
   
   .form-group {
     margin-bottom: 20px;
   }
   
-  
-  label {
+  .form-group label {
     font-weight: bold;
-    margin-bottom: 5px;
-    display: block;
   }
   
-  input[type="text"] {
+  .form-group input {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    font-size: 16px;
-    outline: none;
   }
   
-  button {
-    background-color: #007bff;
-    color: #fff;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 18px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+  .preview-section {
+    flex: 1;
+    margin-left: 20px;
   }
   
-  button:hover {
-    background-color: #0056b3;
-  }
-  
-  .id-card-container {
-    margin-top: 20px;
-  }
-  
-  .id-card-container img {
+  .preview-section img {
     max-width: 100%;
     height: auto;
     border: 1px solid #ccc;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
   }
   
+  .preview-section button {
+    display: block;
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .preview-section button:hover {
+    background-color: #0056b3;
+  }
+  
+  .draggable-profile {
+    width: 140px;
+    height: 140px;
+    position: absolute;
+    cursor: move;
+    user-drag: none;
+  }

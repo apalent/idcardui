@@ -133,8 +133,11 @@ for (let i = 0; i < labels.length; i++) {
   };
 
   return (
+    <div>
+        <h1>ID Card Generator</h1>
+  
     <div className="id-card-form">
-      <h1>ID Card Generator</h1>
+      
       <div className="input-section">
         <div className="form-group">
           <label htmlFor="name">Name:</label>
@@ -178,6 +181,7 @@ for (let i = 0; i < labels.length; i++) {
           </div>
         )}
       </div>
+    </div>
     </div>
   );
 };

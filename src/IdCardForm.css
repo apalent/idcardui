@@ -59,10 +59,3 @@
     background-color: #0056b3;
   }
   
-  .draggable-profile {
-    width: 140px;
-    height: 140px;
-    position: absolute;
-    cursor: move;
-    user-drag: none;
-  }

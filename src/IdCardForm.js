@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import './IdCardForm.css'; // Create this CSS file for styling
 import { saveAs } from 'file-saver';
 
+import AWS from "aws-sdk";
+
 const IdCardForm = () => {
   const [name, setName] = useState('');
   const [dob, setDob] = useState('');
@@ -114,23 +116,66 @@ for (let i = 0; i < labels.length; i++) {
     //   return;
     // }
 
-    // Generate a file name based on name and date of birth
-    const fileName = `${name.replace(/\s/g, '_')}_${mobile}.jpeg`;
+    // Generate a file name based on name and mobile
+    const fileName = `${name.replace(/\s/g, '_')}_${mobile}.png`;
 
     // Fetch the generated ID card image and save it with the calculated file name
     fetch(idCardImage)
       .then((response) => response.blob())
       .then((blob) => {
+        // Save the image locally
         saveAs(blob, fileName);
-      })
-    //   .then(() => saveToDB());
+  
+        // Upload the image to AWS S3
+        uploadFile(blob, fileName);
+      });
   };
 
-  const saveToDB = () => {
-    // You can add code here to send the data to your backend API
-    // Example: send a POST request to your backend to store the data
-    console.log('Saving data to the backend...');
+// Function to upload file to s3
+const uploadFile = async (blob, fileName) => {
+  // S3 Bucket Name
+  const S3_BUCKET = "idcard-react-image-storage";
+
+  // S3 Region
+  const REGION = "us-west-2";
+
+  // S3 Credentials
+  AWS.config.update({
+    accessKeyId: "AKIA4KMLDPGKGMX67HFY",
+    secretAccessKey: "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",
+  });
+  const s3 = new AWS.S3({
+    params: { Bucket: S3_BUCKET },
+    region: REGION,
+  });
+
+  // Files Parameters
+
+  const params = {
+    Bucket: S3_BUCKET,
+    Key: fileName,
+    Body: blob,
   };
+
+  // Uploading file to s3
+
+  var upload = s3
+    .putObject(params)
+    .on("httpUploadProgress", (evt) => {
+      // File uploading progress
+      console.log(
+        "Uploading " + parseInt((evt.loaded * 100) / evt.total) + "%"
+      );
+    })
+    .promise();
+
+  await upload.then((err, data) => {
+    console.log(err);
+    // Fille successfully uploaded
+    alert("File uploaded successfully.");
+  });
+};
+
 
   return (
     <div>

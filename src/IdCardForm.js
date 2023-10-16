@@ -141,8 +141,8 @@ const uploadFile = async (blob, fileName) => {
 
   // S3 Credentials
   AWS.config.update({
-    accessKeyId: "AKIA4KMLDPGKGMX67HFY",
-    secretAccessKey: "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",
+    accessKeyId: process.env.accessKeyId,
+    secretAccessKey: process.env.secretAccessKey,
   });
   const s3 = new AWS.S3({
     params: { Bucket: S3_BUCKET },

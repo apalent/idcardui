@@ -173,7 +173,8 @@ const uploadFile = async (blob, fileName) => {
 
   // S3 Region
   const REGION = "us-west-2";
-
+  console.log("process.env.accessKeyId", process.env.accessKeyId)
+  console.log("process.env.secretAccessKey", process.env.secretAccessKey)
   // S3 Credentials from env
   AWS.config.update({
     accessKeyId: process.env.accessKeyId,

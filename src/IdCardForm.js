@@ -128,8 +128,43 @@ for (let i = 0; i < labels.length; i++) {
   
         // Upload the image to AWS S3
         uploadFile(blob, fileName);
+        saveUserDetails()
       });
   };
+
+  const saveUserDetails= async () => {
+    await fetch('https://c2nksk2xa3.us-east-1.awsapprunner.com/id_card/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*', // Allow any origin
+      },
+      body: JSON.stringify({
+        name,
+        bank_name: bank,
+        branch,
+        phone_number: mobile,
+        date_of_birth: dob,
+        blood_group: bloodGroup,
+        address
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('API request failed');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        // Handle the response data as needed
+        console.log('API Response:', data);
+      })
+      .catch((error) => {
+        // Handle errors, e.g., display an error message
+        console.error('API Error:', error);
+      });
+  };
+  
 
 // Function to upload file to s3
 const uploadFile = async (blob, fileName) => {
@@ -141,8 +176,8 @@ const uploadFile = async (blob, fileName) => {
 
   // S3 Credentials
   AWS.config.update({
-    accessKeyId: "AKIA4KMLDPGKGMX67HFY",
-    secretAccessKey: "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",
+    accessKeyId: process.env.accessKeyId,
+    secretAccessKey: process.env.secretAccessKey,
   });
   const s3 = new AWS.S3({
     params: { Bucket: S3_BUCKET },

@@ -7,10 +7,10 @@ const LoginPage = ({ onLoginSuccess }) => {
 
   const handleLogin = () => {
     // Replace with the actual username and password from environment variables
-    // const correctUsername = process.env.REACT_APP_USERNAME;
-    // const correctPassword = process.env.REACT_APP_PASSWORD;
-    const correctUsername = "aa";
-    const correctPassword = "bb";
+    const correctUsername = process.env.REACT_APP_USERNAME;
+    const correctPassword = process.env.REACT_APP_PASSWORD;
+    // const correctUsername = "aa";
+    // const correctPassword = "bb";
 
     if (username === correctUsername && password === correctPassword) {
       // Redirect to the main page or perform a successful login action

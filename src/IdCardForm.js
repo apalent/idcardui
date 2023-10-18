@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './IdCardForm.css'; // Create this CSS file for styling
 import { saveAs } from 'file-saver';
+import Papa from 'papaparse';
+
 
 import AWS from "aws-sdk";
 
@@ -14,7 +16,7 @@ const IdCardForm = () => {
   const [bloodGroup, setBloodGroup] = useState('');
   const [image, setImage] = useState(null);
   const [idCardImage, setIdCardImage] = useState(null);
-
+  
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     setImage(file);
@@ -108,13 +110,42 @@ for (let i = 0; i < labels.length; i++) {
     };
   };
   
-  
+  const fetchDataAndSaveToCSV = async () => {
+    await fetch('https://c2nksk2xa3.us-east-1.awsapprunner.com/id_card/')
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then((data) => {
+      // Create a CSV string using PapaParse
+      const csv = Papa.unparse(data);
+
+      // Create a Blob from the CSV string
+      const blob = new Blob([csv], { type: 'text/csv' });
+
+      // Create a download link and trigger a click event
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'data.csv';
+      a.click();
+
+      URL.revokeObjectURL(url);
+    })
+    .catch((error) => {
+      console.error('Error fetching data:', error);
+    });
+    };
+
+
 
   const saveIdCardImage = () => {
-    // if (!idCardImage || !name || !dob || !bank || !branch || !mobile || !bloodGroup) {
-    //   alert('Please generate the ID card image first.');
-    //   return;
-    // }
+    if (!idCardImage || !name || !dob || !bank || !branch || !address|| !mobile || !bloodGroup) {
+      alert('Please add all the details');
+      return;
+    }
 
     // Generate a file name based on name and mobile
     const fileName = `${name.replace(/\s/g, '_')}_${mobile}.png`;
@@ -137,7 +168,7 @@ for (let i = 0; i < labels.length; i++) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*', // Allow any origin
+         'Access-Control-Allow-Origin': '*', // Allow any origin
       },
       body: JSON.stringify({
         name,
@@ -173,9 +204,8 @@ const uploadFile = async (blob, fileName) => {
 
   // S3 Region
   const REGION = "us-west-2";
-  console.log("process.env.accessKeyId", process.env.accessKeyId)
-  console.log("process.env.secretAccessKey", process.env.secretAccessKey)
-  // S3 Credentials from env
+
+  // S3 Credentials
   AWS.config.update({
     accessKeyId: process.env.accessKeyId,
     secretAccessKey: process.env.secretAccessKey,
@@ -213,12 +243,10 @@ const uploadFile = async (blob, fileName) => {
 };
 
 
-  return (
-    <div>
-        <h1>ID Card Generator</h1>
-  
+return (
+  <div>
+    <h1>ID Card Generator</h1>
     <div className="id-card-form">
-      
       <div className="input-section">
         <div className="form-group">
           <label htmlFor="name">Name:</label>
@@ -242,7 +270,16 @@ const uploadFile = async (blob, fileName) => {
         </div>
         <div className="form-group">
           <label htmlFor="mobile">Mobile:</label>
-          <input type="text" id="mobile" value={mobile} onChange={(e) => setMobile(e.target.value)} />
+          <input type="text" id="mobile" value={mobile} onChange={(e) => {
+    // Allow only numeric characters (0-9)
+    const numericValue = e.target.value.replace(/\D/g, '');
+
+    // Limit the input to 10 digits
+    const limitedValue = numericValue.slice(0, 10);
+
+    // Update the state with the cleaned and limited value
+    setMobile(limitedValue);
+  }}/>
         </div>
         <div className="form-group">
           <label htmlFor="bloodGroup">Blood Group:</label>
@@ -263,8 +300,10 @@ const uploadFile = async (blob, fileName) => {
         )}
       </div>
     </div>
-    </div>
-  );
+    <h1>export to excel</h1>
+    <button onClick={fetchDataAndSaveToCSV}>Export to csv</button>
+  </div>
+);
 };
 
 export default IdCardForm;

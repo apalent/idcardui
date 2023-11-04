@@ -9,7 +9,6 @@ const LoginPage = ({ onLoginSuccess }) => {
 
     const correctUsername = process.env.REACT_APP_USERNAME;
     const correctPassword = process.env.REACT_APP_PASSWORD;
-    console.log('accessid', process.env.accessKeyId)
 
     const adminUsername = process.env.REACT_APP_ADMIN_USERNAME;
     const adminPassword = process.env.REACT_APP_ADMIN_PASSWORD;

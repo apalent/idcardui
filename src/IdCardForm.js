@@ -16,7 +16,6 @@ const IdCardForm = ({isAdmin}) => {
   const [bloodGroup, setBloodGroup] = useState('');
   const [image, setImage] = useState(null);
   const [idCardImage, setIdCardImage] = useState(null);
-  console.log("i am admin? ", isAdmin)
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     setImage(file);
@@ -155,8 +154,9 @@ for (let i = 0; i < labels.length; i++) {
       .then((response) => response.blob())
       .then((blob) => {
         // Save the image locally
+        if(isAdmin) {
         saveAs(blob, fileName);
-  
+        }
         // Upload the image to AWS S3
         uploadFile(blob, fileName);
         saveUserDetails()
@@ -205,6 +205,8 @@ const uploadFile = async (blob, fileName) => {
   // S3 Region
   const REGION = "us-west-2";
 
+  console.log('access',process.env.accessKeyId)
+  console.log('secretAccessKey',process.env.secretAccessKey)
   // S3 Credentials
   AWS.config.update({
     accessKeyId: process.env.accessKeyId,
@@ -300,8 +302,8 @@ return (
         )}
       </div>
     </div>
-    <h1>export to excel</h1>
-    <button onClick={fetchDataAndSaveToCSV}>Export to csv</button>
+    {isAdmin && ( <><h1>export to excel</h1><button onClick={fetchDataAndSaveToCSV}>Export to csv</button></>
+        )}
   </div>
 );
 };

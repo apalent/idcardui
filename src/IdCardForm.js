@@ -205,12 +205,12 @@ const uploadFile = async (blob, fileName) => {
   // S3 Region
   const REGION = "us-west-2";
 
-  console.log('access',process.env.accessKeyId)
-  console.log('secretAccessKey',process.env.secretAccessKey)
+  console.log('access',process.env.REACT_APP_ENV_A)
+  console.log('secretAccessKey',process.env.REACT_APP_ENV_B)
   // S3 Credentials
   AWS.config.update({
-    accessKeyId: process.env.accessKeyId,
-    secretAccessKey: process.env.secretAccessKey,
+    accessKeyId: process.env.REACT_APP_ENV_A,
+    secretAccessKey: process.env.REACT_APP_ENV_B,
   });
   const s3 = new AWS.S3({
     params: { Bucket: S3_BUCKET },

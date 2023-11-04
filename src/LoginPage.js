@@ -11,13 +11,6 @@ const LoginPage = ({ onLoginSuccess }) => {
     const correctPassword = process.env.REACT_APP_PASSWORD;
     const adminUsername = process.env.REACT_APP_ADMIN_USERNAME;
     const adminPassword = process.env.REACT_APP_ADMIN_PASSWORD;
-    console.log('adminUsername:',adminUsername)
-    console.log('adminPassword:',adminPassword)
-    console.log('correctUsername:',correctUsername)
-    console.log('correctPassword:',correctPassword)
-
-    console.log('entercorrectUsername:',username)
-    console.log('enterdcorrectPassword:',password)
 
     if (username === correctUsername && password === correctPassword) {
       // Redirect to the main page or perform a successful login action

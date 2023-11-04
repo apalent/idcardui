@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import LoginPage from './LoginPage'; // Assuming you have a LoginPage component
 import IdCardForm from './IdCardForm'; // Your IdCardForm component
+import AdminPage from './AdminPage';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -14,12 +15,16 @@ function App() {
 
   return (
     <div className="App">
-      {isLoggedIn ? (
-        <IdCardForm isAdmin= {isAdmin}/>
+    {isLoggedIn ? (
+      isAdmin ? (
+        <AdminPage />
       ) : (
-        <LoginPage onLoginSuccess={handleLoginSuccess} />
-      )}
-    </div>
+        <IdCardForm />
+      )
+    ) : (
+      <LoginPage onLoginSuccess={handleLoginSuccess} />
+    )}
+  </div>
   );
 }
 

@@ -148,7 +148,7 @@ for (let i = 0; i < labels.length; i++) {
     }
 
     // Generate a file name based on name and mobile
-    const fileName = `${name.replace(/\s/g, '_')}_${mobile}.png`;
+    const fileName = `${mobile}.png`;
 
     // Fetch the generated ID card image and save it with the calculated file name
     fetch(idCardImage)

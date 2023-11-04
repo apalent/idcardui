@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import './IdCardForm.css'; // Create this CSS file for styling
-import { saveAs } from 'file-saver';
-import Papa from 'papaparse';
 
 
 import AWS from "aws-sdk";
 
-const IdCardForm = ({isAdmin}) => {
+const IdCardForm = () => {
   const [name, setName] = useState('');
   const [dob, setDob] = useState('');
   const [address, setAddress] = useState('');
@@ -109,34 +107,7 @@ for (let i = 0; i < labels.length; i++) {
     };
   };
   
-  const fetchDataAndSaveToCSV = async () => {
-    await fetch('https://c2nksk2xa3.us-east-1.awsapprunner.com/id_card/')
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
-    .then((data) => {
-      // Create a CSV string using PapaParse
-      const csv = Papa.unparse(data);
 
-      // Create a Blob from the CSV string
-      const blob = new Blob([csv], { type: 'text/csv' });
-
-      // Create a download link and trigger a click event
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'data.csv';
-      a.click();
-
-      URL.revokeObjectURL(url);
-    })
-    .catch((error) => {
-      console.error('Error fetching data:', error);
-    });
-    };
 
 
 
@@ -153,17 +124,15 @@ for (let i = 0; i < labels.length; i++) {
     fetch(idCardImage)
       .then((response) => response.blob())
       .then((blob) => {
-        // Save the image locally
-        if(isAdmin) {
-        saveAs(blob, fileName);
-        }
         // Upload the image to AWS S3
         uploadFile(blob, fileName);
-        // saveUserDetails()
+        console.log("saveUserDetails")
+        saveUserDetails()
       });
   };
 
   const saveUserDetails= async () => {
+    console.log("saveUserDetails")
     await fetch('https://c2nksk2xa3.us-east-1.awsapprunner.com/id_card/', {
       method: 'POST',
       headers: {
@@ -204,9 +173,6 @@ const uploadFile = async (blob, fileName) => {
 
   // S3 Region
   const REGION = "us-west-2";
-
-  console.log('access',process.env.REACT_APP_ENV_A)
-  console.log('secretAccessKey',process.env.REACT_APP_ENV_B)
   // S3 Credentials
   AWS.config.update({
     accessKeyId: process.env.REACT_APP_ENV_A,
@@ -302,8 +268,6 @@ return (
         )}
       </div>
     </div>
-    {isAdmin && ( <><h1>export to excel</h1><button onClick={fetchDataAndSaveToCSV}>Export to csv</button></>
-        )}
   </div>
 );
 };

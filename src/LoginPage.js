@@ -6,16 +6,18 @@ const LoginPage = ({ onLoginSuccess }) => {
   const [loginError, setLoginError] = useState('');
 
   const handleLogin = () => {
-    // Replace with the actual username and password from environment variables
+
     const correctUsername = process.env.REACT_APP_USERNAME;
     const correctPassword = process.env.REACT_APP_PASSWORD;
-    // const correctUsername = "aa";
-    // const correctPassword = "bb";
-
+    const adminUsername = process.env.REACT_APP_ADMIN_USERNAME;
+    const adminPassword = process.env.REACT_APP_ADMIN_PASSWORD;
     if (username === correctUsername && password === correctPassword) {
       // Redirect to the main page or perform a successful login action
-      onLoginSuccess();
-    } else {
+      onLoginSuccess(false);
+    } else  if (username === adminUsername && password === adminPassword) {
+      onLoginSuccess(true);
+    }
+    else {
       setLoginError('Invalid username or password');
     }
   };

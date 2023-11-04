@@ -6,7 +6,7 @@ import Papa from 'papaparse';
 
 import AWS from "aws-sdk";
 
-const IdCardForm = () => {
+const IdCardForm = ({isAdmin}) => {
   const [name, setName] = useState('');
   const [dob, setDob] = useState('');
   const [address, setAddress] = useState('');
@@ -16,7 +16,7 @@ const IdCardForm = () => {
   const [bloodGroup, setBloodGroup] = useState('');
   const [image, setImage] = useState(null);
   const [idCardImage, setIdCardImage] = useState(null);
-  
+  console.log("i am admin? ", isAdmin)
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     setImage(file);

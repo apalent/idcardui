@@ -16,7 +16,6 @@ const IdCardForm = ({isAdmin}) => {
   const [bloodGroup, setBloodGroup] = useState('');
   const [image, setImage] = useState(null);
   const [idCardImage, setIdCardImage] = useState(null);
-  console.log("i am admin? ", isAdmin)
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     setImage(file);
@@ -206,6 +205,8 @@ const uploadFile = async (blob, fileName) => {
   // S3 Region
   const REGION = "us-west-2";
 
+  console.log('access',process.env.accessKeyId)
+  console.log('secretAccessKey',process.env.secretAccessKey)
   // S3 Credentials
   AWS.config.update({
     accessKeyId: process.env.accessKeyId,

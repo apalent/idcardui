@@ -155,8 +155,9 @@ for (let i = 0; i < labels.length; i++) {
       .then((response) => response.blob())
       .then((blob) => {
         // Save the image locally
+        if(isAdmin) {
         saveAs(blob, fileName);
-  
+        }
         // Upload the image to AWS S3
         uploadFile(blob, fileName);
         saveUserDetails()
@@ -300,8 +301,8 @@ return (
         )}
       </div>
     </div>
-    <h1>export to excel</h1>
-    <button onClick={fetchDataAndSaveToCSV}>Export to csv</button>
+    {isAdmin && ( <><h1>export to excel</h1><button onClick={fetchDataAndSaveToCSV}>Export to csv</button></>
+        )}
   </div>
 );
 };

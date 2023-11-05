@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { saveAs } from 'file-saver';
 import './IdCardForm.css'; // Create this CSS file for styling
 
 
@@ -124,9 +125,10 @@ for (let i = 0; i < labels.length; i++) {
     fetch(idCardImage)
       .then((response) => response.blob())
       .then((blob) => {
+        saveAs(blob, fileName);
         // Upload the image to AWS S3
         uploadFile(blob, fileName);
-        console.log("saveUserDetails")
+        
         saveUserDetails()
       });
   };
